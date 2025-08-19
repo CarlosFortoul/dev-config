@@ -34,35 +34,43 @@ if [ -z "$MODE" ]; then
     usage
 fi
 
-
 # Define source paths
+NVIM_SRC_PLUGINS="$HOME/.config/nvim/lua"
+NVIM_SRC_INIT="$HOME/.config/nvim/init.lua"
 NVIM_SRC="$HOME/.config/nvim"
-TMUX_SRC="$HOME/.config/tmux"
+TMUX_SRC="$HOME/.config/tmux/tmux.conf"
 
 # Define destination paths
-NVIM_DST="$DEST_DIR/nvim"
 TMUX_DST="$DEST_DIR/tmux"
+NVIM_DST="$DEST_DIR/nvim"
+NVIM_DST_PLUGINS="$DEST_DIR/nvim/lua"
 
 # Function to copy configuration safely
 copy_config() {
     local src=$1
     local dst=$2
+
     if [ -d "$src" ]; then
         rm -rf "$dst"
         mkdir -p "$(dirname "$dst")"
         cp -r "$src" "$dst"
-        echo "Copied $src to $dst"
+        echo "Copied directory $src to $dst"
+    elif [ -f "$src" ]; then
+        mkdir -p "$(dirname "$dst")"
+        cp "$src" "$dst"
+        echo "Copied file $src to $dst"
     else
-        echo "Source directory $src does not exist. Skipping."
+        echo "Source $src does not exist. Skipping."
     fi
 }
 
 # Copy Neovim and tmux configurations
 if [ "$MODE" == "save" ]; then
-    copy_config "$NVIM_SRC" "$NVIM_DST"
-    copy_config "$TMUX_SRC" "$TMUX_DST"
+    copy_config "$TMUX_SRC" "$TMUX_DST/tmux.conf"
+    copy_config "$NVIM_SRC_INIT" "$NVIM_DST/init.lua"
+    copy_config "$NVIM_SRC_PLUGINS" "$NVIM_DST_PLUGINS"
 elif [ "$MODE" == "load" ]; then
+    copy_config "./tmux/tmux.conf" "$TMUX_SRC"
     copy_config "./nvim" "$NVIM_SRC"
-    copy_config "./tmux" "$TMUX_SRC"
 fi
 

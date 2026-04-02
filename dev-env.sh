@@ -17,7 +17,7 @@ while getopts ":pwl" opt; do
       MODE="save"
       ;;
     w )
-      DEST_DIR="/mnt/c/Users/Carlos_Fortoul/dev-config"
+      DEST_DIR="/mnt/c/Users/Carlos_Fortoul/personal/dev-config"
       MODE="save"
       ;;
     l )

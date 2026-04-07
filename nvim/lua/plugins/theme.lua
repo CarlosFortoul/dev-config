@@ -1,0 +1,1 @@
+/home/cefv/.config/omarchy/current/theme/neovim.lua

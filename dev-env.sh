@@ -1,27 +1,40 @@
 #!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEST_DIR="$SCRIPT_DIR"
+MODE=""
 
 # Usage function
 usage() {
-    echo "Usage: $0 [-w | -p | -l]"
-    echo "  -w    Save config from work directory"
-    echo "  -p    Save config from personal directory"
-    echo "  -l    Load dev config into /.config folder"
+    echo "Usage: $0 [-w | -p | -l] [-d repo_dir]"
+    echo "  -w    Save config to the work dev-config directory"
+    echo "  -p    Save config to \$HOME/Personal/dev-config"
+    echo "  -l    Load this repo's config into \$HOME/.config"
+    echo "  -d    Override the dev-config repo directory"
     exit 1
 }
 
 # Parse flags
-while getopts ":pwl" opt; do
+while getopts ":pwld:" opt; do
   case ${opt} in
     p )
       DEST_DIR="$HOME/Personal/dev-config"
       MODE="save"
       ;;
     w )
-      DEST_DIR="/mnt/c/Users/Carlos_Fortoul/personal/dev-config"
+      if [ "$(uname -s)" = "Darwin" ]; then
+        DEST_DIR="$HOME/dev-config"
+      else
+        DEST_DIR="/mnt/c/Users/Carlos_Fortoul/personal/dev-config"
+      fi
       MODE="save"
       ;;
     l )
       MODE="load"
+      ;;
+    d )
+      DEST_DIR="$OPTARG"
       ;;
     \? )
       usage
@@ -35,8 +48,6 @@ if [ -z "$MODE" ]; then
 fi
 
 # Define source paths
-NVIM_SRC_PLUGINS="$HOME/.config/nvim/lua/plugins"
-NVIM_SRC_CONFIG="$HOME/.config/nvim/lua/config"
 NVIM_SRC_INIT="$HOME/.config/nvim/init.lua"
 NVIM_SRC="$HOME/.config/nvim"
 TMUX_SRC="$HOME/.config/tmux/tmux.conf"
@@ -65,6 +76,12 @@ copy_config() {
     fi
 }
 
+load_config() {
+    mkdir -p "$HOME/.config"
+    copy_config "$DEST_DIR/tmux/tmux.conf" "$TMUX_SRC"
+    copy_config "$DEST_DIR/nvim" "$NVIM_SRC"
+}
+
 copy_by_extension() {
     local src_dir=$1
     local dst_dir=$2
@@ -90,11 +107,9 @@ copy_by_extension() {
 if [ "$MODE" == "save" ]; then
     copy_config "$TMUX_SRC" "$TMUX_DST/tmux.conf"
     copy_config "$NVIM_SRC_INIT" "$NVIM_DST/init.lua"
-    copy_config "$NVIM_SRC_PLUGINS" "$NVIM_DST_LUA/plugins"
-    copy_config "$NVIM_SRC_CONFIG" "$NVIM_DST_LUA/config"
+    copy_config "$NVIM_SRC/lua/plugins" "$NVIM_DST_LUA/plugins"
+    copy_config "$NVIM_SRC/lua/config" "$NVIM_DST_LUA/config"
     copy_by_extension "$NVIM_SRC" "$NVIM_DST"
 elif [ "$MODE" == "load" ]; then
-    copy_config "./tmux/tmux.conf" "$TMUX_SRC"
-    copy_config "./nvim" "$NVIM_SRC"
+    load_config
 fi
-

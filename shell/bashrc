@@ -1,0 +1,16 @@
+# shellcheck shell=bash
+# bash interactive config — symlinked to ~/.bashrc by dev-config.
+# Portable pieces live in shell/shared.sh; machine-specific in ~/.config/shell/local.sh.
+
+# shellcheck source=/dev/null
+[ -f "$HOME/.config/dev-config-shell/shared.sh" ] && . "$HOME/.config/dev-config-shell/shared.sh"
+
+# ---- Prompt: path + git branch + venv ----
+_git_branch() {
+    git rev-parse --abbrev-ref HEAD 2>/dev/null | sed 's/.*/ (&)/'
+}
+_venv_info() {
+    [ -n "$VIRTUAL_ENV" ] && printf ' (%s)' "$(basename "$VIRTUAL_ENV")"
+}
+# \[..\] wrap non-printing color escapes so bash measures the line correctly.
+PS1='\[\e[34m\]\w\[\e[35m\]$(_git_branch)\[\e[36m\]$(_venv_info)\[\e[32m\] ❯ \[\e[0m\]'

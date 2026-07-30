@@ -1,0 +1,36 @@
+# Arch Linux package manifest for dev-config.
+# Applied with: sudo pacman -S --needed - < (comments/blanks stripped by install.sh)
+# Assumes an omarchy base is already present (nvim config uses omarchy theme hotreload).
+
+# Core
+git
+neovim
+tmux
+nodejs
+npm
+go
+python
+
+# Search / navigation
+ripgrep
+fd
+fzf
+
+# Git / dev tooling
+lazygit
+github-cli
+tree-sitter
+shellcheck
+
+# Runtime version manager
+mise
+
+# Kubernetes
+kubectl
+k9s
+
+# Fonts
+ttf-jetbrains-mono-nerd
+
+# AUR (install manually with yay/paru if not covered above), e.g.:
+#   yay -S some-aur-package

@@ -1,0 +1,35 @@
+# macOS package manifest for dev-config. Applied with: brew bundle --file packages/Brewfile
+
+# Core
+brew "git"
+brew "neovim"
+brew "tmux"
+brew "node"
+brew "go"
+brew "python"
+
+# Search / navigation
+brew "ripgrep"
+brew "fd"
+brew "fzf"
+
+# Git / dev tooling
+brew "lazygit"
+brew "gh"
+brew "tree-sitter"
+brew "shellcheck"
+
+# Runtime version manager
+brew "mise"
+
+# Kubernetes
+brew "kubernetes-cli"
+brew "k9s"
+
+# Fonts
+cask "font-jetbrains-mono-nerd-font"
+
+# Optional Neovim formatters/linters (also installable via :MasonInstall)
+# brew "stylua"
+# brew "shfmt"
+# brew "prettier"

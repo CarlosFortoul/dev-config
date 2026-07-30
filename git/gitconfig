@@ -1,0 +1,15 @@
+# Portable git config — symlinked to ~/.gitconfig by dev-config.
+# Identity, signing, and machine-specific credential helpers live in ~/.gitconfig.local
+# (gitignored), pulled in by the [include] at the bottom.
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+
+[include]
+	path = ~/.gitconfig.local

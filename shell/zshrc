@@ -1,0 +1,23 @@
+# zsh interactive config — symlinked to ~/.zshrc by dev-config.
+# Portable pieces live in shell/shared.sh; machine-specific in ~/.config/shell/local.sh.
+
+# shellcheck source=/dev/null
+[ -f "$HOME/.config/dev-config-shell/shared.sh" ] && . "$HOME/.config/dev-config-shell/shared.sh"
+
+# ---- Prompt: path + git + venv (zsh vcs_info) ----
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git:*' formats       ' %F{magenta}%b%f%F{yellow}%u%c%f'
+zstyle ':vcs_info:git:*' actionformats ' %F{magenta}%b%f (%a)%F{yellow}%u%c%f'
+zstyle ':vcs_info:git:*' unstagedstr   ' ✗'
+zstyle ':vcs_info:git:*' stagedstr     ' ●'
+
+precmd() { vcs_info }
+
+venv_info() {
+  [[ -n "$VIRTUAL_ENV" ]] && echo " %F{cyan}(${VIRTUAL_ENV:t})%f"
+}
+
+setopt PROMPT_SUBST
+PROMPT='%F{blue}%~%f${vcs_info_msg_0_}$(venv_info) %F{green}❯%f '

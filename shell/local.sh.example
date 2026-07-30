@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Machine-specific shell config and secrets.
+# Copied to ~/.config/shell/local.sh by install.sh (that copy is gitignored — never commit it).
+# Sourced at the end of shell/shared.sh, so it can override anything above.
+
+# ---- ~/.local/bin on PATH (e.g. for devin / pipx / user scripts) ----
+# if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+#     export PATH="$HOME/.local/bin:$PATH"
+# fi
+
+# ---- mise (runtime version manager: ruby, node, python) ----
+# macOS (Homebrew): eval "$(/opt/homebrew/bin/mise activate zsh)"
+# Arch:             eval "$(mise activate zsh)"
+# if command -v mise >/dev/null 2>&1; then
+#     eval "$(mise activate "$(basename "${SHELL:-zsh}")")"
+# fi
+
+# ---- Windsurf / codeium ----
+# export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+
+# ---- Work-specific env / tokens (never commit real values) ----
+# export SOME_API_TOKEN="..."

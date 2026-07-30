@@ -1,0 +1,13 @@
+# shellcheck shell=bash
+# Login-shell environment — symlinked to ~/.zprofile by dev-config.
+# OS-guarded so a single file works on macOS (Homebrew) and Arch.
+# Machine-specific PATH/tool activation belongs in ~/.config/shell/local.sh.
+
+# Homebrew: activate if present at either standard prefix. No hardcoded path.
+if command -v brew >/dev/null 2>&1; then
+    eval "$(brew shellenv)"
+elif [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi

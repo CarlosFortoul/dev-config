@@ -1,0 +1,6 @@
+# Machine-specific / secret files — seeded from *.example, never committed.
+*.local
+local.sh
+
+# Backups created by lib/link.sh
+*.bak.*
